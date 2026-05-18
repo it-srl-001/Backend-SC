@@ -48,7 +48,7 @@ return ordenGuardada;
   async findAll() {
     // Usamos 'relations' para que el historial traiga también los productos de cada orden
     return await this.ordenRepo.find({
-      relations: ['items'],
+      relations: ['items', 'solicitud'],
       order: { id: 'DESC' }
     });
   }

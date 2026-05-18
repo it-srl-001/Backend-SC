@@ -14,6 +14,7 @@ import { OrdenesTrabajoModule } from './ordenes-trabajo/ordenes-trabajo.module';
 
 // NUEVO MÓDULO DE ADMINISTRACIÓN
 import { RecibosModule } from './recibos/recibos.module';
+import { FacturasModule } from './facturas/facturas.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { RecibosModule } from './recibos/recibos.module';
     VehiculosModule,
     OrdenesTrabajoModule,
     RecibosModule, // <--- Módulo de Recibos agregado
+    FacturasModule,
   ],
 })
 export class AppModule {}
