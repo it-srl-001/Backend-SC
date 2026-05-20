@@ -8,13 +8,17 @@ export class SolicitudesRepository extends Repository<Solicitud> {
     super(Solicitud, dataSource.createEntityManager());
   }
 
-  async buscarConFiltros(usuario: { id: number; rol: string }) {
+  async buscarConFiltros(usuario: { id: number; rol: string; estado?: string }) {
     const query = this.createQueryBuilder('solicitud')
       .leftJoinAndSelect('solicitud.usuario', 'usuario')
       .orderBy('solicitud.fecha_creacion', 'DESC');
 
     if (usuario.rol !== 'admin') {
       query.where('solicitud.usuario_id = :userid', { userid: usuario.id });
+    }
+
+    if (usuario.estado) {
+      query.andWhere('solicitud.estado = :estado', { estado: usuario.estado });
     }
 
     return await query.getMany();

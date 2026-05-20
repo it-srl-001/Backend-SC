@@ -40,6 +40,18 @@ export class OrdenCompra {
   @Column({ nullable: true, type: 'text' })
   especificaciones: string;
 
+  @Column({ nullable: true })
+  creado_por_nombre: string;
+
+  @Column({ nullable: true })
+  creado_por_email: string;
+
+  @Column({ default: false })
+  oculto_para_admins: boolean;
+
+  @Column({ nullable: true })
+  ocultado_por_email: string;
+
   // Relación con los items (Esto quita el error en el create)
   @OneToMany(() => OrdenCompraItem, (item) => item.orden, { cascade: true })
   items: OrdenCompraItem[];

@@ -16,7 +16,8 @@ export class SolicitudesController {
   async obtenerTodas(@Query() query: any) {
     const usuarioSimulado = {
       rol: query.rol || 'user', 
-      id: parseInt(query.usuario_id) || 0 
+      id: parseInt(query.usuario_id) || 0,
+      estado: query.estado || '',
     };
     
     return this.service.obtenerTodas(usuarioSimulado);

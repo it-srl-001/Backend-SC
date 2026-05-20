@@ -54,6 +54,14 @@ export class CreateOrdenDto {
   @IsOptional()
   autoriza?: string;
 
+  @IsString()
+  @IsOptional()
+  creado_por_nombre?: string;
+
+  @IsString()
+  @IsOptional()
+  creado_por_email?: string;
+
   @IsOptional()
   @IsNumber()
   solicitudId?: number;

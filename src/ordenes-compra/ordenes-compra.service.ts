@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { OrdenCompra } from './entities/orden-compra.entity';
 import { OrdenCompraItem } from './entities/orden-compra-item.entity';
 import { Solicitud } from '../solicitudes/entities/solicitud.entity';
+import { Usuario } from '../usuarios/entities/usuario.entity';
 import { CreateOrdenDto } from './dto/create-orden.dto';
 
 @Injectable()
@@ -14,6 +15,9 @@ export class OrdenesCompraService {
     
     @InjectRepository(Solicitud)
     private readonly solicitudRepo: Repository<Solicitud>,
+
+    @InjectRepository(Usuario)
+    private readonly usuarioRepo: Repository<Usuario>,
   ) {}
 
   async crear(datos: CreateOrdenDto) {
@@ -45,11 +49,29 @@ return ordenGuardada;
     }
   }
 
-  async findAll() {
+  async findAll(adminId = 0) {
+    const usuario = adminId ? await this.usuarioRepo.findOne({ where: { id: adminId } }) : null;
+    const esAdminPrincipal = (usuario?.email || '').toLowerCase().trim() === 'admin@sistema.com';
+    const where = esAdminPrincipal ? {} : { oculto_para_admins: false };
     // Usamos 'relations' para que el historial traiga también los productos de cada orden
     return await this.ordenRepo.find({
+      where,
       relations: ['items', 'solicitud'],
       order: { id: 'DESC' }
     });
+  }
+
+  async ocultarParaAdmins(id: number, adminId: number) {
+    const usuario = await this.usuarioRepo.findOne({ where: { id: adminId } });
+    if ((usuario?.email || '').toLowerCase().trim() !== 'admin@sistema.com') {
+      throw new BadRequestException('Solo admin@sistema.com puede ocultar órdenes de compra.');
+    }
+
+    await this.ordenRepo.update(id, {
+      oculto_para_admins: true,
+      ocultado_por_email: usuario?.email || 'admin@sistema.com',
+    });
+
+    return { ok: true };
   }
 }

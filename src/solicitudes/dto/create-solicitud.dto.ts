@@ -33,4 +33,8 @@ export class CreateSolicitudDto {
   @IsString()
   @IsOptional()
   link_referencia?: string;
+
+  @IsString()
+  @IsOptional()
+  imagen_referencia?: string;
 }

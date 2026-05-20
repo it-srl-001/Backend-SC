@@ -34,6 +34,9 @@ export class Solicitud {
   @Column({ nullable: true })
   link_referencia: string;
 
+  @Column({ type: 'text', nullable: true })
+  imagen_referencia: string;
+
   // Relación con Usuario
   @ManyToOne(() => Usuario, (usuario) => usuario.solicitudes)
   @JoinColumn({ name: 'usuario_id' })

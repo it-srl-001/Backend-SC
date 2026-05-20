@@ -31,12 +31,12 @@ export class SolicitudesService {
     throw new BadRequestException("Error al crear: " + error.message);
   }
 }
-  async obtenerTodas(usuario: { id: number; rol: string }) {
+  async obtenerTodas(usuario: { id: number; rol: string; estado?: string }) {
     return await this.solicitudRepo.buscarConFiltros(usuario);
   }
 
   async actualizarEstado(id: number, estado: string) {
-    const estadosValidos = ['En Revisión', 'Aprobado', 'Rechazado'];
+    const estadosValidos = ['En Revisión', 'Aprobado', 'Rechazado', 'COMPRADO'];
     if (!estadosValidos.includes(estado)) {
       throw new BadRequestException("Estado no válido");
     }
